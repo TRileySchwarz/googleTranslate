@@ -3,14 +3,13 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"os"
 )
 
 func main() {
@@ -25,19 +24,25 @@ func main() {
 
 	sourceLanguage := "en"
 
-	file, err := os.Open("untranslated/textToTranslate")
-	if err != nil {
-		fmt.Print("There was an issue opening the text file")
-		fmt.Printf("This is the error: %v", err)
-		return
-	}
-	defer file.Close()
+	//file, err := os.Open("untranslated/textToTranslate")
+	//if err != nil {
+	//	fmt.Print("There was an issue opening the text file")
+	//	fmt.Printf("This is the error: %v", err)
+	//	return
+	//}
+	//defer file.Close()
 
-	text, err := ioutil.ReadAll(file)
-	fmt.Print(string(text))
+	wordPtr := flag.String("translate", "foo", "a string")
+	flag.Parse()
+
+
+	//text, err := ioutil.ReadAll(file)
+	//fmt.Print(string(text))
+
+	fmt.Print("The word we are translating is: " + *wordPtr)
 
 	for i := 0; i < len(languagesSupported); i++ {
-		err := translateText(languagesSupported[i], string(text), sourceLanguage)
+		err := translateText(languagesSupported[i], *wordPtr, sourceLanguage)
 
 		if err != nil {
 		fmt.Print("There was an issue translating the text")
@@ -98,20 +103,20 @@ func translateText(languageCode string, text string, sourceLanguage string) erro
 		log.Fatal(err)
 	}
 
-	fmt.Printf("\n\nThis is the result of the %v translation: %v", language, stringToWrite)
+	fmt.Printf("\n%v translation: %v", language, stringToWrite)
 
-	file, err := os.Create("translated/"+ language + ".txt")
-	defer func(){
-		err := file.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}()
+	//file, err := os.Create("translated/thisIsNewTranslation.txt")
+	//defer func(){
+	//	err := file.Close()
+	//	if err != nil {
+	//		log.Fatal(err)
+	//	}
+	//}()
 
-	_, err = file.WriteString(stringToWrite);
-	if err != nil {
-		log.Fatalln("error writing record to txt file:", err)
-	}
+	//_, err = file.WriteString(stringToWrite);
+	//if err != nil {
+	//	log.Fatalln("error writing record to txt file:", err)
+	//}
 
 	return nil
 }

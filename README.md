@@ -18,3 +18,8 @@ requires a working installation of go https://golang.org/doc/install
 if there is the following "," anywhere in the file. 
 
 There is also the risk of being rate limited due to the free status of this api being used
+
+
+To pass the command line flag use the following:
+
+`` go run main.go -translate=purple``
