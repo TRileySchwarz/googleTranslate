@@ -12,3 +12,9 @@ requires a working installation of go https://golang.org/doc/install
 4 - run the following in the root folder  ``$ go run main.go``
 
 5 - Providing nothing is broken, you will find a version of the translated text inside of the "translated" folder
+
+
+*** There are some weird edge cases by having to use this as a free version, such that the contents of the text file will do weird stuff
+if there is the following "," anywhere in the file. 
+
+There is also the risk of being rate limited due to the free status of this api being used
