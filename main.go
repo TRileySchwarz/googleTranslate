@@ -2,7 +2,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -18,28 +17,116 @@ func main() {
 	// Comment/Uncomment the languages you want to translate to
 	// the location of the language codes... https://cloud.google.com/translate/docs/languages
 	languagesSupported := []string{
-		"af",
-		"sq",
+		"Afrikaans",
+		"Amharic",
+		"Armenian",
+		"Azerbaijani",
+		"Basque",
+		"Belarusian",
+		"Bengali",
+		"Bosnian",
+		"Bulgarian",
+		"Catalan",
+		"Cebuano",
+		"Chinese",
+		"Corsican",
+		"Croatian",
+		"Czech",
+		"Danish",
+		"Dutch",
+		"English",
+		"Esperanto",
+		"Estonian",
+		"Finnish",
+		"French",
+		"Frisian",
+		"Galician",
+		"Georgian",
+		"German",
+		"Greek",
+		"Gujarati",
+		"Haitian Creole",
+		"Hausa",
+		"Hawaiian",
+		"Hebrew",
+		"Hindi",
+		"Hmong",
+		"Hungarian",
+		"Icelandic",
+		"Igbo",
+		"Indonesian",
+		"Irish",
+		"Italian",
+		"Japanese",
+		"Javanese",
+		"Kannada",
+		"Kazakh",
+		"Khmer",
+		"Korean",
+		"Kurdish",
+		"Kyrgyz",
+		"Lao",
+		"Latin",
+		"Latvian",
+		"Lithuanian",
+		"Luxembourgish",
+		"Macedonian",
+		"Malagasy",
+		"Malay",
+		"Malayalam",
+		"Maltese",
+		"Maori",
+		"Marathi",
+		"Mongolian",
+		"Myanmar",
+		"Nepali",
+		"Norwegian",
+		"Nyanja",
+		"Pashto",
+		"Persian",
+		"Polish",
+		"Portuguese",
+		"Punjabi",
+		"Romanian",
+		"Russian",
+		"Samoan",
+		"Scots Gaelic",
+		"Serbian",
+		"Sesotho",
+		"Shona",
+		"Sindhi",
+		"Sinhala",
+		"Slovak",
+		"Slovenian",
+		"Somali",
+		"Spanish",
+		"Sundanese",
+		"Swahili",
+		"Swedish",
+		"Tagalog",
+		"Tajik",
+		"Tamil",
+		"Telugu",
+		"Thai",
+		"Turkish",
+		"Ukrainian",
+		"Urdu",
+		"Uzbek",
+		"Vietnamese",
+		"Welsh",
+		"Xhosa",
+		"Yiddish",
+		"Yoruba",
+		"Zulu",
 	}
 
 	sourceLanguage := "en"
-
-	//file, err := os.Open("untranslated/textToTranslate")
-	//if err != nil {
-	//	fmt.Print("There was an issue opening the text file")
-	//	fmt.Printf("This is the error: %v", err)
-	//	return
-	//}
-	//defer file.Close()
 
 	wordPtr := flag.String("translate", "foo", "a string")
 	flag.Parse()
 
 
-	//text, err := ioutil.ReadAll(file)
-	//fmt.Print(string(text))
-
-	fmt.Print("The word we are translating is: " + *wordPtr)
+	fmt.Print("The text we are translating is:  " + *wordPtr + "\n")
 
 	for i := 0; i < len(languagesSupported); i++ {
 		err := translateText(languagesSupported[i], *wordPtr, sourceLanguage)
@@ -52,25 +139,13 @@ func main() {
 	fmt.Println("\n\n -- Closing Program --")
 }
 
-// This function takes in a language code and returns the corresponding full string of that code
-func getLanguage(languageCode string) (string, error) {
-	switch languageCode{
-		case "af":
-		return "Afrikaans", nil
+func translateText(language string, text string, sourceLanguage string) error {
 
-		case "sq":
-		return "Albanian", nil
+	// Get the corresponding language code for the languageString requested
+	languageCode := getLanguageCode(language)
 
-		// Add new language conversions here
-	}
-
-	return "", errors.New("An unsupported language was submited")
-}
-
-func translateText(languageCode string, text string, sourceLanguage string) error {
 	// Google translate API url
 	url := "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLanguage + "&tl=" + languageCode + "&dt=t&q=" + url.QueryEscape(text)
-
 	//log.Printf("Querying Google translate API with the following url: \n%v\n\n", url)
 
 	// Create httpGet Response
@@ -94,16 +169,12 @@ func translateText(languageCode string, text string, sourceLanguage string) erro
 	// Cast the body as a string
 	bodyString := string(body)
 
+	// Hack the weird string response we get
 	split := strings.Split(bodyString, `","`)
-
 	stringToWrite := split[0][4:]
 
-	language, err := getLanguage(languageCode)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	fmt.Printf("\n%v translation: %v", language, stringToWrite)
+	fmt.Printf("\n%v:   %v", language, stringToWrite)
 
 	//file, err := os.Create("translated/thisIsNewTranslation.txt")
 	//defer func(){
@@ -119,6 +190,117 @@ func translateText(languageCode string, text string, sourceLanguage string) erro
 	//}
 
 	return nil
+}
+
+// This function takes in a language code and return the corresponding full string of that code
+func getLanguageCode(languageString string) string {
+	switch languageString {
+	case "Afrikaans": return	"af"
+	case "Albanian": return	"sq"
+	case "Amharic": return	"am"
+	case "Arabic": return	"ar"
+	case "Armenian": return	"hy"
+	case "Azerbaijani": return	"az"
+	case "Basque": return	"eu"
+	case "Belarusian": return	"be"
+	case  "Bengali": return	"bn"
+	case "Bosnian": return	"bs"
+	case  "Bulgarian": return	"bg"
+	case  "Catalan": return	"ca"
+	case  "Cebuano": return	"ceb"
+	case  "Chinese": return   "zh"
+	case   "Corsican": return	"co"
+	case   "Croatian": return	"hr"
+	case  "Czech": return	"cs"
+	case   "Danish": return	"da"
+	case   "Dutch": return	"nl"
+	case  "English": return	"en"
+	case "Esperanto": return	"eo"
+	case "Estonian": return	"et"
+	case  "Finnish": return	"fi"
+	case  "French": return	"fr"
+	case  "Frisian": return	"fy"
+	case  "Galician": return	"gl"
+	case  "Georgian": return	"ka"
+	case   "German": return	"de"
+	case  "Greek": return	"el"
+	case  "Gujarati": return	"gu"
+	case   "Haitian Creole": return	"ht"
+	case  "Hausa": return	"ha"
+	case  "Hawaiian": return	"haw"
+	case  "Hebrew": return	"he"
+	case   "Hindi": return	"hi"
+	case   "Hmong": return	"hmn"
+	case   "Hungarian": return	"hu"
+	case  "Icelandic": return	"is"
+	case   "Igbo": return	"ig"
+	case  "Indonesian": return	"id"
+	case   "Irish": return	"ga"
+	case  "Italian": return	"it"
+	case   "Japanese": return	"ja"
+	case  "Javanese": return	"jw"
+	case  "Kannada": return	"kn"
+	case   "Kazakh": return	"kk"
+	case  "Khmer": return	"km"
+	case  "Korean": return	"ko"
+	case  "Kurdish": return	"ku"
+	case  "Kyrgyz": return	"ky"
+	case   "Lao": return	"lo"
+	case   "Latin": return	"la"
+	case   "Latvian": return	"lv"
+	case  "Lithuanian": return	"lt"
+	case  "Luxembourgish": return	"lb"
+	case   "Macedonian": return	"mk"
+	case   "Malagasy": return	"mg"
+	case  "Malay": return	"ms"
+	case   "Malayalam": return	"ml"
+	case   "Maltese": return	"mt"
+	case  "Maori": return	"mi"
+	case   "Marathi": return	"mr"
+	case  "Mongolian": return	"mn"
+	case  "Myanmar (Burmese)": return	"my"
+	case  "Nepali": return	"ne"
+	case  "Norwegian": return	"no"
+	case   "Nyanja (Chichewa)": return	"ny"
+	case  "Pashto": return	"ps"
+	case   "Persian": return	"fa"
+	case  "Polish": return	"pl"
+	case  "Portuguese": return	"pt"
+	case  "Punjabi": return	"pa"
+	case  "Romanian": return	"ro"
+	case   "Russian": return	"ru"
+	case   "Samoan": return	"sm"
+	case  "Scots Gaelic": return	"gd"
+	case   "Serbian": return	"sr"
+	case  "Sesotho": return	"st"
+	case  "Shona": return "sn"
+	case   "Sindhi": return	"sd"
+	case   "Sinhala (Sinhalese)": return	"si"
+	case  "Slovak": return	"sk"
+	case   "Slovenian": return	"sl"
+	case  "Somali": return	"so"
+	case  "Spanish": return	"es"
+	case  "Sundanese": return	"su"
+	case   "Swahili": return	"sw"
+	case  "Swedish": return	"sv"
+	case   "Tagalog (Filipino)": return	"tl"
+	case  "Tajik": return	"tg"
+	case   "Tamil": return	"ta"
+	case  "Telugu": return	"te"
+	case  "Thai": return	"th"
+	case  "Turkish": return	"tr"
+	case  "Ukrainian": return	"uk"
+	case   "Urdu": return	"ur"
+	case   "Uzbek": return	"uz"
+	case   "Vietnamese": return	"vi"
+	case  "Welsh": return	"cy"
+	case  "Xhosa": return "xh"
+	case   "Yiddish": return	"yi"
+	case  "Yoruba": return	"yo"
+	case   "Zulu": return	"zu"
+	}
+
+	return ""
 }
 
 
